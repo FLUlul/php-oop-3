@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>live-coding</title>
+    <title>ex-computer-php</title>
 
     <!--  
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,7 +23,7 @@
      *          - toString: "marca modello: prezzo [codice univoco]"
      * 
      *          ECCEZIONI:
-     *          - codice univoco: deve essere composto da esattamente 6 cifre (no altri caratteri)
+     *          ok- codice univoco: deve essere composto da esattamente 6 cifre (no altri caratteri)
      *          - marca e modello: devono essere costituiti da stringhe tra i 3 e i 20 caratteri
      *          - prezzo: deve essere un valore intero compreso tra 0 e 2000
      * 
@@ -31,74 +31,81 @@
      *      il corretto funzionamento dell'algoritmo
     -->
     <?php
-        class User {
-            private $username;
-            private $password;
-            private $age;
+        class Computer {
+            public $uniCode;
+            private $model;
+            private $price;
+            private $brand;
 
-            public function __construct($username, $password) {
-                $this -> setUsername($username);
-                $this -> setPassword($password);
+            public function __construct($uniCode, $price) {
+                $this -> setUniCode($uniCode);
+                $this -> setPrice($price);
             }
 
-            public function setUsername($username) {
-                if(strlen($username) < 3 || strlen($username) > 16) {
-                    throw new Exception("Inserire un username dai 3 ai 16 caratteri");
+            public function setUniCode($uniCode) {
+                if (strlen($uniCode) != 6 || !is_int($uniCode)) {
+                    throw new Exception("6 numbers expected");
                 }
 
-                $this -> username = $username;
+                $this -> uniCode = $uniCode;
             }
-            public function getUsername() {
-                return $this -> username;
+            public function getUniCode() {
+                return $this -> uniCode;
             }
-            public function setPassword($password) {
-                if (ctype_alnum($password)) {
-                    throw new Exception("Inserire una password che contenga almeno un carattere speciale(es. - _ : , etc...");
+            public function setPrice($price) {
+                if ($price < 0 || $price > 2000 || !is_int($price)) {
+                    throw new Exception("Set a price between 0 and 2000");
+                    
                 }
 
-                $this -> password = $password;
+                $this -> price = $price;
             }
-            public function getPassword() {
-                return $this -> password;
+            public function getPrice() {
+                return $this -> price;
             }
-            public function setAge($age) {
-                if (!is_int($age) || $age < 18) {
-                    throw new Exception("Inserire un eta' da 18 anni in su' in valore numerico");
+            public function setModel($model) {
+                if (strlen($model) < 3 || strlen($model) > 20 || !is_string($model)) {
+                    throw new Exception("Type a string between 3 and 20 chars");
+                }
+                $this -> model = $model;
+            }
+            public function getModel() {
+                return $this -> model;
+            }
+            public function setBrand($brand) {
+                if (strlen($brand) < 3 || strlen($brand) > 20 || !is_string($brand)) {
+                    throw new Exception("Type a string between 3 and 20 chars");
                 }
 
-                $this -> age = $age;
+                $this -> brand = $brand;
             }
-            public function getAge() {
-                return $this -> age;
+            public function getBrand() {
+                return $this -> brand;
             }
 
-            public function printFullUser() {
+            public function printIt() {
                 echo $this;
             }
             public function __toString() {
-                return $this->getUsername() . ": " . $this->getAge() . " [" . $this->getPassword() . "]";
+                return $this->getBrand() . " " . $this->getModel() .  " : " . $this->getPrice() . "$ [" . $this->getUniCode() . "]";
             }
         }
     ?>
 </head>
 <body>
-    <h1>HELLO WORLD</h1>
-
     <?php
-        echo "<h1>Print Full User</h1>";
+        echo "<h1>Print Full Pc</h1>";
         try {
-            $user1 = new User("CapoNappa", "abc_");
-            $user1 -> setAge(19);
+            $pc1 = new Computer(122546, 1250);
+            $pc1 -> setModel("Lapsus 2.1");
+            $pc1 -> setBrand("Asus");
 
-            $user1 -> printFullUser();
+            $pc1 -> printIt();
         } catch (Exception $e) {
             echo $e -> getMessage();
         } finally {
-            echo "<br>Dati Inseriti!";
+            echo "<br><br>Dati Inseriti!";
         }
-        
-
-        echo "<br><br><br>compilato ok!";
     ?>
 </body>
 </html>
